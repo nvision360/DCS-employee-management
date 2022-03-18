@@ -1,42 +1,35 @@
 import * as React from 'react';
-import { Collapse, Container, Navbar, NavbarBrand, NavbarToggler, NavItem, NavLink } from 'reactstrap';
-import { Link } from 'react-router-dom';
-import './NavMenu.css';
+import { Link, NavLink } from 'react-router-dom';
 
-export default class NavMenu extends React.PureComponent<{}, { isOpen: boolean }> {
-    public state = {
-        isOpen: false
-    };
-
+export class NavMenu extends React.Component<{}, {}> {
     public render() {
-        return (
-            <header>
-                <Navbar className="navbar-expand-sm navbar-toggleable-sm border-bottom box-shadow mb-3" light>
-                    <Container>
-                        <NavbarBrand tag={Link} to="/">DCS_Employee_Management</NavbarBrand>
-                        <NavbarToggler onClick={this.toggle} className="mr-2"/>
-                        <Collapse className="d-sm-inline-flex flex-sm-row-reverse" isOpen={this.state.isOpen} navbar>
-                            <ul className="navbar-nav flex-grow">
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/">Home</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/counter">Counter</NavLink>
-                                </NavItem>
-                                <NavItem>
-                                    <NavLink tag={Link} className="text-dark" to="/fetch-data">Fetch data</NavLink>
-                                </NavItem>
-                            </ul>
-                        </Collapse>
-                    </Container>
-                </Navbar>
-            </header>
-        );
-    }
-
-    private toggle = () => {
-        this.setState({
-            isOpen: !this.state.isOpen
-        });
+        return <div className='main-nav'>
+            <div className='navbar navbar-inverse'>
+                <div className='navbar-header'>
+                    <button type='button' className='navbar-toggle' data-toggle='collapse' data-target='.navbar-collapse'>
+                        <span className='sr-only'>Toggle navigation</span>
+                        <span className='icon-bar'></span>
+                        <span className='icon-bar'></span>
+                        <span className='icon-bar'></span>
+                    </button>
+                    <Link className='navbar-brand' to={'/'}>DCS Employee Management</Link>
+                </div>
+                <div className='clearfix'></div>
+                <div className='navbar-collapse collapse'>
+                    <ul className='nav navbar-nav'>
+                        <li>
+                            <NavLink to={'/'} exact activeClassName='active'>
+                                <span className='glyphicon glyphicon-home'></span> Home
+                            </NavLink>
+                        </li>
+                        <li>
+                            <NavLink to={'/fetchemployee'} activeClassName='active'>
+                                <span className='glyphicon glyphicon-th-list'></span>Employee List
+                            </NavLink>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+        </div>;
     }
 }

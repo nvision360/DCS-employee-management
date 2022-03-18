@@ -1,27 +1,30 @@
 import 'bootstrap/dist/css/bootstrap.css';
-
+import './css/site.css';
 import * as React from 'react';
 import * as ReactDOM from 'react-dom';
-import { Provider } from 'react-redux';
-import { ConnectedRouter } from 'connected-react-router';
-import { createBrowserHistory } from 'history';
-import configureStore from './store/configureStore';
-import App from './App';
-import registerServiceWorker from './registerServiceWorker';
+import { AppContainer } from 'react-hot-loader';
+import { BrowserRouter } from 'react-router-dom';
+import * as RoutesModule from './routes';
+let routes = RoutesModule.routes;
 
-// Create browser history to use in the Redux store
-const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href') as string;
-const history = createBrowserHistory({ basename: baseUrl });
+function renderApp() {
+    // This code starts up the React app when it runs in a browser. It sets up the routing
+    // configuration and injects the app into a DOM element.
+    const baseUrl = document.getElementsByTagName('base')[0].getAttribute('href')!;
+    ReactDOM.render(
+        <AppContainer>
+            <BrowserRouter children={routes} basename={baseUrl} />
+        </AppContainer>,
+        document.getElementById('react-app')
+    );
+}
 
-// Get the application-wide store instance, prepopulating with state from the server where available.
-const store = configureStore(history);
+renderApp();
 
-ReactDOM.render(
-    <Provider store={store}>
-        <ConnectedRouter history={history}>
-            <App />
-        </ConnectedRouter>
-    </Provider>,
-    document.getElementById('root'));
-
-registerServiceWorker();
+// Allow Hot Module Replacement
+if (module.hot) {
+    module.hot.accept('./routes', () => {
+        routes = require<typeof RoutesModule>('./routes').routes;
+        renderApp();
+    });
+}
